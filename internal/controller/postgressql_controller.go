@@ -32,6 +32,7 @@ import (
 
 	databasev1alpha1 "github.com/vygos/postgres-operator/api/v1alpha1"
 	"github.com/vygos/postgres-operator/internal/controller/pg"
+	"github.com/vygos/postgres-operator/internal/glog"
 )
 
 // PostgresSQLReconciler reconciles a PostgresSQL object
@@ -54,9 +55,8 @@ type PostgresSQLReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.15.0/pkg/reconcile
 func (r *PostgresSQLReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	logger := log.FromContext(ctx)
 
-	logger.Info("Reconcile loop")
+	glog.Log(ctx).Info("Starting reconcile postgres controller")
 
 	postgres := databasev1alpha1.PostgresSQL{}
 	err := r.Get(ctx, req.NamespacedName, &postgres)
@@ -156,8 +156,11 @@ func (r *PostgresSQLReconciler) deleteResources(
 	_ = r.Get(ctx, req.NamespacedName, pgStatefulSet)
 	_ = r.Get(ctx, pg.BuildNamespacedSvcName(req.Namespace, postgres.Name), svc)
 
-	err := r.Delete(ctx, pgStatefulSet)
-	err = r.Delete(ctx, svc)
+	if err := r.Delete(ctx, pgStatefulSet); err != nil {
+		glog.Log(ctx).Error(err, "Error while trying to delete resource statefulset", pgStatefulSet)
+	}
 
-	fmt.Println(err)
+	if err := r.Delete(ctx, svc); err != nil {
+		glog.Log(ctx).Error(err, "Error while trying to delete resource service", svc)
+	}
 }
