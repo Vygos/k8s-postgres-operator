@@ -123,11 +123,10 @@ func (r *PostgresSQLReconciler) createResource(
 	postgres *databasev1alpha1.PostgresSQL,
 	obj client.Object,
 ) error {
-	logger := log.FromContext(ctx)
 
 	err := r.Create(ctx, obj)
 	if err != nil {
-		logger.Error(err, fmt.Sprintf("error while creating resource %s", obj.GetName()))
+		log.FromContext(ctx).Error(err, fmt.Sprintf("error while creating resource %s", obj.GetName()))
 		postgres.Status.Failed()
 		return r.Status().Update(ctx, postgres)
 	}
@@ -157,10 +156,10 @@ func (r *PostgresSQLReconciler) deleteResources(
 	_ = r.Get(ctx, pg.BuildNamespacedSvcName(req.Namespace, postgres.Name), svc)
 
 	if err := r.Delete(ctx, pgStatefulSet); err != nil {
-		glog.Log(ctx).Error(err, "Error while trying to delete resource statefulset", pgStatefulSet)
+		glog.Log(ctx).Error(err, fmt.Sprintf("Error while trying to delete resource statefulset %+v", pgStatefulSet))
 	}
 
 	if err := r.Delete(ctx, svc); err != nil {
-		glog.Log(ctx).Error(err, "Error while trying to delete resource service", svc)
+		glog.Log(ctx).Error(err, fmt.Sprintf("Error while trying to delete resource service %+v", svc))
 	}
 }
