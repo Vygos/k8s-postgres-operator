@@ -1,0 +1,22 @@
+apiVersion: database.vygos.io/v1alpha1
+kind: PostgresSQL
+metadata:
+  labels:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/instance: postgresql-sample
+    app.kubernetes.io/part-of: postgres-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: postgres-operator
+  name: postgresql
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+  env:
+    - name: POSTGRES_USERNAME
+      value: postgres
+    - name: POSTGRES_PASSWORD
+      value: postgres
+    - name: POSTGRES_DB
+      value: account
+
