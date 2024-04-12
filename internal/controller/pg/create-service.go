@@ -2,10 +2,12 @@ package pg
 
 import (
 	"fmt"
-	"github.com/vygos/postgres-operator/api/v1alpha1"
+
 	v1 "k8s.io/api/core/v1"
 	v12 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+
+	"github.com/vygos/postgres-operator/api/v1alpha1"
 )
 
 const SvcSufix = "service"

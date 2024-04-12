@@ -19,19 +19,19 @@ package controller
 import (
 	"context"
 	"fmt"
-	"github.com/vygos/postgres-operator/internal/controller/pg"
+	"time"
+
 	v1 "k8s.io/api/apps/v1"
 	v12 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
-	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
-	"time"
-
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	databasev1alpha1 "github.com/vygos/postgres-operator/api/v1alpha1"
+	"github.com/vygos/postgres-operator/internal/controller/pg"
 )
 
 // PostgresSQLReconciler reconciles a PostgresSQL object
